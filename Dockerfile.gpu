@@ -1,0 +1,13 @@
+FROM kaldiasr/kaldi:gpu-latest
+
+ADD . /gentle
+
+RUN mkdir /gentle/ext && ln -s /opt/kaldi /gentle/ext
+RUN cd /gentle && python3 setup.py develop
+RUN cd /gentle && ./install_models.sh
+
+EXPOSE 8765
+
+VOLUME /gentle/webdata
+
+CMD cd /gentle && python3 serve.py
